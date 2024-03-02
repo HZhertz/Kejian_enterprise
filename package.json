@@ -11,10 +11,12 @@
     "axios": "^1.6.7",
     "core-js": "^3.8.3",
     "element-ui": "^2.15.14",
+    "video.js": "^7.6.0",
     "vue": "^2.6.14",
     "vue-awesome-swiper": "^3.1.3",
     "vue-lazyload": "^1.3.4",
-    "vue-router": "^3.5.1"
+    "vue-router": "^3.5.1",
+    "vue-video-player": "^5.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
