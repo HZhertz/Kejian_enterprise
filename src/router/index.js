@@ -110,4 +110,25 @@ const router = new VueRouter({
   routes
 })
 
+// 判断是否需要登录权限 以及是否登录
+router.beforeEach((to, from, next) => {
+  // 判断是否需要登录权限
+  if (to.matched.some((res) => res.meta.requireAuth)) {
+    // 判断是否登录
+    if (sessionStorage.getItem('token')) {
+      next()
+    } else {
+      // 没登录则跳转到登录界面
+      next({
+        path: '/login',
+        query: {
+          redirect: to.fullPath
+        }
+      })
+    }
+  } else {
+    next()
+  }
+})
+
 export default router
