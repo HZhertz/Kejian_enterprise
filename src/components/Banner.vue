@@ -5,25 +5,25 @@
       <img src="../assets/img/bgtop.jpg" />
     </div>
     <div class="banner-title">
-      <p>{{title}}</p>
+      <p>{{ title }}</p>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: "Banner",
+  name: 'Banner',
   props: {
     title: {
       type: String,
-      default: ""
+      default: ''
     },
     img: {
       type: String,
-      default: "../assets/img/bgtop.jpg"
+      default: '../assets/img/bgtop.jpg'
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

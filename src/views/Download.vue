@@ -1,9 +1,16 @@
 <template>
-  <div></div>
+  <div class="download">
+    <banner img="../assets/img/appDown.jpg" title="下载APP" />
+  </div>
 </template>
 
 <script>
-export default {}
+import Banner from '../components/Banner'
+export default {
+  components: {
+    Banner
+  }
+}
 </script>
 
 <style lang="scss" scoped></style>
