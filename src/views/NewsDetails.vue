@@ -13,6 +13,7 @@
 </template>
 
 <script>
+import https from '@/utils/https'
 import Banner from '../components/Banner'
 export default {
   name: 'NewsDetails',
@@ -34,7 +35,7 @@ export default {
   },
   methods: {
     loadData() {
-      this.$http
+      https
         .get(`News/GetNewsById/${this.pid}`)
         .then((response) => {
           //console.log(response);

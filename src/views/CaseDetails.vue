@@ -13,6 +13,7 @@
 </template>
 
 <script>
+import https from '@/utils/https'
 import Banner from '../components/Banner'
 export default {
   components: {
@@ -33,7 +34,7 @@ export default {
   },
   methods: {
     loadData() {
-      this.$http
+      https
         .get(`Cases/GetCasesById/${this.pid}`)
         .then((response) => {
           //console.log(response);

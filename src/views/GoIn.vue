@@ -124,6 +124,7 @@
 </template>
 
 <script>
+import https from '@/utils/https'
 import Banner from '../components/Banner'
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
 export default {
@@ -152,10 +153,10 @@ export default {
   },
   mounted() {
     Promise.all([
-      this.$http.get('Honor/GetHonorAll'),
-      this.$http.get('Enterprise/GetEnterpriseAll'),
-      this.$http.get(`Team/GetTeamAll`),
-      this.$http.get(`Course/GetCourseAll`)
+      https.get('Honor/GetHonorAll'),
+      https.get('Enterprise/GetEnterpriseAll'),
+      https.get(`Team/GetTeamAll`),
+      https.get(`Course/GetCourseAll`)
     ]).then(([responseHonor, responseEnterprise, responseTeam, responseCourse]) => {
       this.honorList = responseHonor.data
       this.partnerImg = responseEnterprise.data

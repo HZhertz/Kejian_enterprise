@@ -68,6 +68,7 @@
 
 <script>
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
+import https from '@/utils/https'
 export default {
   name: 'HelloWorld',
   components: {
@@ -124,7 +125,7 @@ export default {
     }
   },
   mounted() {
-    Promise.all([this.$http.get('Cases/GetCasesAll'), this.$http.get(`News?type=1&num=3`)]).then(
+    Promise.all([https.get('Cases/GetCasesAll'), https.get(`News?type=1&num=3`)]).then(
       ([responseCases, responseNews]) => {
         this.caseList = responseCases.data
         this.newsList = responseNews.data
