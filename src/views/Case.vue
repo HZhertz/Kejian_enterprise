@@ -37,17 +37,17 @@ export default {
     }
   },
   mounted() {
-    window.console.log('case')
+    console.log('case')
     https
       .get('Cases/GetCasesAll')
       .then((response) => {
-        //console.log(response);
+      
         this.caseList = response.data
-        //window.console.log(this.caseList);
+       
         this.loading = false
       })
       .catch(function (error) {
-        window.console.log(error)
+        console.log(error)
       })
   }
 }

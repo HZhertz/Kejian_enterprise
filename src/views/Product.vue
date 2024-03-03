@@ -154,11 +154,11 @@ export default {
       )
       .then((response) => {
         this.videoSrc = response.data[0].Content
-        window.console.log(this.videoSrc)
+      console.log(this.videoSrc)
         this.loading = false
       })
       .catch(function (error) {
-        window.console.log(error)
+      console.log(error)
       })
   }
 }

@@ -112,12 +112,10 @@ const router = new VueRouter({
 
 // 判断是否需要登录权限 以及是否登录
 router.beforeEach((to, from, next) => {
-  console.log(to)
   // 判断是否需要登录权限
-  if (to.meta.requireAuth) {
+  if (to.matched.some((res) => res.meta.requireAuth)) {
     // 判断是否登录
-    if (sessionStorage.getItem('token')) {
-      
+    if (sessionStorage.getItem('Ticket')) {
       next()
     } else {
       // 没登录则跳转到登录界面

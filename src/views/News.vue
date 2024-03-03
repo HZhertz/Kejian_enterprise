@@ -62,13 +62,11 @@ export default {
       https
         .get(`News?type=${this.newstype}&num=6`)
         .then((response) => {
-          //console.log(response);
           this.newsList = response.data
           this.loading = false
-          //window.console.log(this.newsList);
         })
         .catch(function (error) {
-          window.console.log(error)
+          console.log(error)
         })
     }
   },

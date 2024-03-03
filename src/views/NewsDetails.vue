@@ -28,7 +28,7 @@ export default {
   },
   created() {
     this.pid = this.$route.params.id
-    window.console.log(this.pid)
+    console.log(this.pid)
   },
   mounted() {
     this.loadData()
@@ -38,12 +38,10 @@ export default {
       https
         .get(`News/GetNewsById/${this.pid}`)
         .then((response) => {
-          //console.log(response);
           this.newsIdList = response.data
-          window.console.log(this.newsIdList)
         })
         .catch(function (error) {
-          window.console.log(error)
+          console.log(error)
         })
     }
   }

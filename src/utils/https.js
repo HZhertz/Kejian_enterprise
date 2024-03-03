@@ -12,7 +12,6 @@ var loadinginstace
 
 https.interceptors.request.use(
   (config) => {
-    console.log(config)
     if (config.url.substring(0, 5) === '/news' || config.url.substring(0, 5) === '/recr') {
       return config
     }
@@ -20,7 +19,6 @@ https.interceptors.request.use(
     if (token) {
       config.headers.Authorization = sessionStorage.getItem('Ticket')
     }
-    //console.log(config.url)
     // element ui Loading方法
     loadinginstace = Loading.service({
       fullscreen: true
