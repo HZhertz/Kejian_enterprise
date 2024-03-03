@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { Loading, Message } from 'element-ui'
 
-const baseURL = 'http://shkjgw.shkjem.com/api'
+const baseURL = 'http://127.0.0.1:3007'
 const https = axios.create({
   baseURL,
   timeout: 5000
@@ -12,14 +12,13 @@ var loadinginstace
 
 https.interceptors.request.use(
   (config) => {
+    console.log(config)
     if (config.url.substring(0, 5) === '/news' || config.url.substring(0, 5) === '/recr') {
       return config
     }
-    console.log(sessionStorage.getItem('Ticket') != null)
-    if (sessionStorage.getItem('Ticket') != null) {
-      config.headers = {
-        Authorization: 'BasicAuth ' + sessionStorage.getItem('Ticket')
-      }
+    const token = sessionStorage.getItem('Ticket')
+    if (token) {
+      config.headers.Authorization = sessionStorage.getItem('Ticket')
     }
     //console.log(config.url)
     // element ui Loading方法
@@ -42,7 +41,7 @@ https.interceptors.response.use(
   (response) => {
     // 响应成功关闭loading
     loadinginstace.close()
-    return response
+    return response.data
   },
   (error) => {
     loadinginstace.close()

@@ -33,7 +33,7 @@ Vue.config.productionTip = false
 // axios.defaults.baseURL = 'http://shkjgw.shkjem.com/api/'
 // Vue.prototype.$http = axios
 // // 图片服务器地址
-Vue.prototype.imgserver = 'http://shkjgw.shkjem.com/'
+Vue.prototype.imgserver = 'http://127.0.0.1:3007'
 
 new Vue({
   router,

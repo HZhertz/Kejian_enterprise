@@ -36,6 +36,8 @@
 </template>
 
 <script>
+import https from '@/utils/https'
+
 export default {
   data() {
     return {
@@ -62,17 +64,17 @@ export default {
     login() {
       this.$refs.lform.validate((valid) => {
         if (valid) {
-          
-          this.$http
-            .get(`User/Login?strUser=${this.loginform.name}&strPwd=${this.loginform.pass}`)
+          https
+            .post('User/Login', { strAdmin: this.loginform.name, strPwd: this.loginform.pass })
             .then((response) => {
               window.console.log(response)
               if (response.data.bRes) {
                 this.$message({
-                  message: '登录成功了呢',
+                  message: '登录成功',
                   type: 'success'
                 })
-                sessionStorage.setItem('token', response.data.Ticket)
+                sessionStorage.setItem('Ticket', response.data.Ticket)
+                console.log(this.$route)
                 this.$router.push({ name: 'admin' })
               } else {
                 this.$message({
