@@ -38,7 +38,7 @@ export default {
       https
         .get(`News/GetNewsById/${this.pid}`)
         .then((response) => {
-          this.newsIdList = response.data
+          this.newsIdList = response.data[0]
         })
         .catch(function (error) {
           console.log(error)

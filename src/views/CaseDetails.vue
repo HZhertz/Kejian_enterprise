@@ -37,7 +37,8 @@ export default {
       https
         .get(`Cases/GetCasesById/${this.pid}`)
         .then((response) => {
-          this.caseIdList = response.data
+         
+          this.caseIdList = response.data[0]
         })
         .catch(function (error) {
           console.log(error)
