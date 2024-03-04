@@ -134,7 +134,7 @@ export default {
       } else {
         this.loading = true
         https
-          .post('Admin/ModifiedUser', this.formData)
+          .put('Admin/ModifiedUser', this.formData)
           .then((response) => {
             this.loading = false
             console.log(response)

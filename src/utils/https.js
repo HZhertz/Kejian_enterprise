@@ -16,7 +16,6 @@ https.interceptors.request.use(
       return config
     }
     const token = sessionStorage.getItem('Ticket')
-    console.log(token)
     if (token) {
       config.headers.Authorization = token
     }
