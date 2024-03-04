@@ -32,7 +32,7 @@
           <el-input v-model="formData.Title" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="案例图片" :label-width="formLabelWidth">
-          <Uploader :img="formData.Img" folder="news_image" :updateImg="updateImg"></Uploader>
+          <Uploader :img="formData.Img" folder="case_image" :updateImg="updateImg"></Uploader>
         </el-form-item>
         <el-form-item label="案例内容" :label-width="formLabelWidth">
           <el-input v-model="formData.Content" autocomplete="off"></el-input>
