@@ -1,6 +1,6 @@
 <template>
   <div class="news">
-    <banner title="新闻资讯" />
+    <Banner title="新闻资讯" :img="require('../assets/img/news_top.jpg')" />
     <div class="news-section">
       <div class="news-section-content">
         <div class="content-nav">
@@ -58,7 +58,7 @@ export default {
   methods: {
     loadData() {
       https
-        .get(`News?type=${this.newstype}&num=6`)
+        .get(`News/GetNews?type=${this.newstype}&num=6`)
         .then((response) => {
           this.newsList = response.data
         })
@@ -79,10 +79,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-* {
-  margin: 0;
-  padding: 0;
-}
 .news {
   width: 100%;
   height: 100%;
@@ -92,25 +88,22 @@ export default {
 
   &-section {
     width: 100%;
-    //height: 1600px;
 
     &-content {
       width: 1240px;
-      //height: 1600px;
       margin: 0 auto;
       background-color: #fff;
-      border: 1px solid red;
+      border: 1px solid #e13834;
 
       .content-nav {
         width: 400px;
         height: 55px;
         margin: 0 auto;
         display: flex;
-        //justify-content: center;
         align-items: center;
         position: relative;
         bottom: 30px;
-        border: 1px solid red;
+        border: 1px solid #e13834;
 
         &-btn {
           width: 50%;
@@ -119,11 +112,11 @@ export default {
           align-items: center;
           justify-content: center;
           background-color: #e4e4e4;
-          transition: all 0.2s;
+          transition: all 0.8s;
         }
 
         .content-nav-active {
-          background-color: red;
+          background-color: #e13834;
           color: #fff;
         }
       }
@@ -134,7 +127,6 @@ export default {
         display: flex;
         justify-content: flex-start;
         flex-wrap: wrap;
-        //border: 1px solid blue;
 
         .item-list {
           width: 330px;
@@ -149,6 +141,7 @@ export default {
           &:hover {
             border: 1px solid #fff;
             box-shadow: 0 0 5px 2px #bfd3e0;
+            transform: translate(0px, -2px);
           }
           .item-img {
             width: 300px;

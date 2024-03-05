@@ -2,7 +2,7 @@
   <div class="banner">
     <div class="mm"></div>
     <div class="banner-img">
-      <img src="../assets/img/bgtop.jpg" />
+      <img :src="img" />
     </div>
     <div class="banner-title">
       <p>{{ title }}</p>
@@ -12,7 +12,6 @@
 
 <script>
 export default {
-  name: 'Banner',
   props: {
     title: {
       type: String,
@@ -29,7 +28,7 @@ export default {
 <style lang="scss" scoped>
 .banner {
   width: 100%;
-  height: 300px;
+  height: 500px;
   display: flex;
   position: relative;
   overflow: hidden;
@@ -39,11 +38,9 @@ export default {
     position: absolute;
     width: 100%;
     height: 100%;
-
     padding: 10px;
     margin: -10px;
     filter: blur(10px);
-
     background-image: url(../assets/img/bgtop.jpg);
     background-position: center;
     background-size: 100%;
@@ -51,7 +48,6 @@ export default {
 
   img {
     position: absolute;
-    //width: 1240px;
     height: 100%;
     left: 50%;
     transform: translate(-50%, 0);
@@ -62,7 +58,7 @@ export default {
     color: #fff;
     font-size: 45px;
     font-weight: 400;
-    line-height: 300px;
+    line-height: 500px;
     text-align: center;
     width: 100%;
   }
