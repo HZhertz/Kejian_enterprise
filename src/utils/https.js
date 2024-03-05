@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { Loading, Message } from 'element-ui'
 
-const baseURL = 'http://127.0.0.1:3007'
+const baseURL = 'http://127.0.0.1:3007/'
 const https = axios.create({
   baseURL,
   timeout: 5000

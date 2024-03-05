@@ -96,11 +96,6 @@ const routes = [
         path: '/admin/dictionary',
         name: 'dictionary',
         component: () => import('../views/Admin/Dictionary.vue')
-      },
-      {
-        path: '/admin/page',
-        name: 'page',
-        component: () => import('../views/Admin/Page.vue')
       }
     ]
   }
