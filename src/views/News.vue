@@ -1,7 +1,7 @@
 <template>
   <div class="news">
     <banner title="新闻资讯" />
-    <div class="news-section" v-loading="loading">
+    <div class="news-section">
       <div class="news-section-content">
         <div class="content-nav">
           <div
@@ -51,21 +51,18 @@ export default {
   },
   data() {
     return {
-      loading: true,
-      newsList: [],
-      newstype: 1
+      newstype: 1,
+      newsList: []
     }
   },
   methods: {
     loadData() {
-      this.loading = true
       https
         .get(`News?type=${this.newstype}&num=6`)
         .then((response) => {
           this.newsList = response.data
-          this.loading = false
         })
-        .catch(function (error) {
+        .catch((error) => {
           console.log(error)
         })
     }
@@ -74,8 +71,7 @@ export default {
     this.loadData()
   },
   watch: {
-    newstype(type) {
-      window.console.log(type)
+    newstype() {
       this.loadData()
     }
   }

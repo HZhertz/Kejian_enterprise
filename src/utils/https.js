@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { Loading, Message } from 'element-ui'
+import { nextTick } from 'vue'
 
 const baseURL = 'http://127.0.0.1:3007/'
 const https = axios.create({
@@ -7,7 +8,7 @@ const https = axios.create({
   timeout: 5000
 })
 
-let loadinginstace
+let loadingInstance
 
 https.interceptors.request.use(
   (config) => {
@@ -17,13 +18,15 @@ https.interceptors.request.use(
         config.headers.Authorization = token
       }
     }
-    loadinginstace = Loading.service({
+    loadingInstance = Loading.service({
       fullscreen: true
     })
     return config
   },
   (error) => {
-    loadinginstace.close()
+    nextTick(() => {
+      loadingInstance.close()
+    })
     Message.error({
       message: '加载超时'
     })
@@ -33,11 +36,15 @@ https.interceptors.request.use(
 
 https.interceptors.response.use(
   (response) => {
-    loadinginstace.close()
+    nextTick(() => {
+      loadingInstance.close()
+    })
     return response.data
   },
   (error) => {
-    loadinginstace.close()
+    nextTick(() => {
+      loadingInstance.close()
+    })
     return Promise.reject(error)
   }
 )
