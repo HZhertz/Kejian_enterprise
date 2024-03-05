@@ -7,19 +7,16 @@ const https = axios.create({
   timeout: 5000
 })
 
-//http 拦截器
-var loadinginstace
+let loadinginstace
 
 https.interceptors.request.use(
   (config) => {
-    if (config.url.substring(0, 5) === '/news' || config.url.substring(0, 5) === '/recr') {
-      return config
+    if (config.url.startsWith('Admin')) {
+      const token = sessionStorage.getItem('Ticket')
+      if (token) {
+        config.headers.Authorization = token
+      }
     }
-    const token = sessionStorage.getItem('Ticket')
-    if (token) {
-      config.headers.Authorization = token
-    }
-    // element ui Loading方法
     loadinginstace = Loading.service({
       fullscreen: true
     })
@@ -34,16 +31,13 @@ https.interceptors.request.use(
   }
 )
 
-// http响应拦截器
 https.interceptors.response.use(
   (response) => {
-    // 响应成功关闭loading
     loadinginstace.close()
     return response.data
   },
   (error) => {
     loadinginstace.close()
-
     return Promise.reject(error)
   }
 )

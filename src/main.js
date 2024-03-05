@@ -8,6 +8,7 @@ import 'swiper/dist/css/swiper.css'
 import VueLazyload from 'vue-lazyload'
 import VueVideoPlayer from 'vue-video-player'
 import 'video.js/dist/video-js.css'
+import '@/style/style.css'
 
 Vue.use(ElementUI)
 Vue.use(VueAwesomeSwiper)
