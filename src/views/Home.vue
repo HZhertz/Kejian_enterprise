@@ -1,5 +1,5 @@
 <template>
-  <div class="home" v-loading="loading">
+  <div class="home">
     <swiper id="swiperBox" v-bind:options="swiperOption" ref="mySwiper">
       <swiper-slide class="swiper-slide slide-one">
         <div class="page">
@@ -57,7 +57,7 @@
             <div class="item-content" :style="'order: ' + (i % 2 == 0 ? 3 : 1)">
               <h3>{{ news.Title }}</h3>
               <p>{{ news.Content }}</p>
-              <span>{{ news.CreateTime }}</span>
+              <span>{{ news.CreateTime.slice(0, 10) }}</span>
             </div>
           </div>
         </div>
@@ -70,14 +70,12 @@
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
 import https from '@/utils/https'
 export default {
-  name: 'HelloWorld',
   components: {
     swiper,
     swiperSlide
   },
   data() {
     return {
-      loading: true,
       caseList: [],
       newsList: [],
       swiperOption: {
@@ -88,48 +86,19 @@ export default {
         autoHeight: true,
         slidesPerView: 1,
         mousewheel: true,
-        mousewheelControl: true, //同上
+        mousewheelControl: true,
         height: window.innerHeight - 60,
         resistanceRatio: 0,
-        observeParents: true,
+        observeParents: true
         // https://www.swiper.com.cn/api/index.html SwiperApi
-
-        // 如果自行设计了插件，那么插件的一些配置相关参数，也应该出现在这个对象中，如下debugger
-        //debugger: true,
-
-        // swiper的各种回调函数也可以出现在这个对象中，和swiper官方一样
-        on: {
-          //监听滑动切换事件，返回swiper对象
-          // slideChange: () => {
-          //   let swiper = this.$refs.mySwiper.swiper;
-          //   //console.log(swiper.activeIndex); //滑动打印当前索引
-          //   if (swiper.activeIndex === this.list.length - 1) {
-          //     //到最后一个加载更多数据
-          //     let newList = [];
-          //     let listLength = this.list.length;
-          //     for (let i = 0; i < 10; i++) {
-          //       newList.push(listLength + i);
-          //     }
-          //     this.list = this.list.concat(newList);
-          //   }
-          // }
-        }
       }
     }
   },
-  created() {},
-  // 如果你需要得到当前的swiper对象来做一些事情，你可以像下面这样定义一个方法属性来获取当前的swiper对象，同时notNextTick必须为true
-  computed: {
-    swiper() {
-      return this.$refs.mySwiper.swiper
-    }
-  },
   mounted() {
-    Promise.all([https.get('Cases/GetCasesAll'), https.get(`News?type=1&num=3`)]).then(
-      ([responseCases, responseNews]) => {
-        this.caseList = responseCases.data
+    Promise.all([https.get('Case/GetCaseAll'), https.get('News/GetNews?type=1&num=3')]).then(
+      ([responseCase, responseNews]) => {
+        this.caseList = responseCase.data
         this.newsList = responseNews.data
-        this.loading = false
       }
     )
   }
@@ -203,6 +172,7 @@ export default {
   opacity: 0;
   overflow: hidden;
   background-color: rgba(225, 56, 52, 0.7);
+  text-align: center;
 
   .hover-title {
     height: 50px;
@@ -215,12 +185,12 @@ export default {
     margin-top: 20px;
   }
   .bottom {
-    border-bottom: 1px solid #fff;
+    border-bottom: 3px solid #fff;
     width: 60px;
     margin: 0 auto;
   }
   .more {
-    width: 90px;
+    width: 80px;
     padding: 5px 5px;
     margin: 0 auto;
     margin-top: 100px;
