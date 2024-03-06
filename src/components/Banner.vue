@@ -28,7 +28,7 @@ export default {
 <style lang="scss" scoped>
 .banner {
   width: 100%;
-  height: 500px;
+  height: 480px;
   display: flex;
   position: relative;
   overflow: hidden;
@@ -48,9 +48,10 @@ export default {
 
   img {
     position: absolute;
-    height: 100%;
+    top: 50%;
     left: 50%;
-    transform: translate(-50%, 0);
+    transform: translate(-50%, -50%);
+    width: 100%;
   }
 
   &-title {

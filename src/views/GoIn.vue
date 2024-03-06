@@ -1,7 +1,7 @@
 <template>
   <div class="go-in">
-    <banner img="../assets/img/bgtop.jpg" title="走进科建" />
-    <div class="section" v-loading="loading">
+    <banner title="走进科建" :img="require('../assets/img/home_top.jpg')" />
+    <div class="section">
       <div class="section-content">
         <div class="content-summary">
           <div class="summary-left">
@@ -30,7 +30,7 @@
         <!-- 发展历程 -->
         <div class="content-course">
           <div class="top">
-            <h3>发展历程</h3>
+            <h3 class="animate__animated fadeInUp">发展历程</h3>
             <p>DEVELOPMENT</p>
             <div class="border"></div>
             <div class="timeline"></div>
@@ -60,13 +60,13 @@
         </div>
 
         <div class="content-culture">
-          <h3>企业文化</h3>
+          <h3 class="animate__animated fadeInUp">企业文化</h3>
           <h3>CULTURE</h3>
           <p>我们只专注一件事情——工程项目管理</p>
-          <span>确保工程无重大安全事故</span>
-          <span>确保工程施工单位无大面积返工</span>
-          <span>确保工程材料及设备无伪劣产品</span>
-          <span>确保工程管理留下痕迹、实施过程可追溯</span>
+          <span class="animate__animated fadeInRight">确保工程无重大安全事故</span>
+          <span class="animate__animated fadeInRight">确保工程施工单位无大面积返工</span>
+          <span class="animate__animated fadeInRight">确保工程材料及设备无伪劣产品</span>
+          <span class="animate__animated fadeInRight">确保工程管理留下痕迹、实施过程可追溯</span>
         </div>
         <!-- 公司荣誉 -->
         <div class="content-honor">
@@ -76,11 +76,11 @@
             </el-dialog>
           </div>
           <div class="top">
-            <h3>公司荣誉</h3>
+            <h3 class="animate__animated fadeInUp">公司荣誉</h3>
             <p>HONOR</p>
             <div class="border"></div>
           </div>
-          <ul class="honor-show">
+          <ul class="honor-show animate__animated fadeInUp">
             <li v-for="(honor, index) in honorList" :key="index">
               <img
                 v-lazy="imgserver + honor.Img"
@@ -97,7 +97,7 @@
         <!-- 团队风采 -->
         <div class="content-team">
           <div class="top">
-            <h3>团队风采</h3>
+            <h3 class="animate__animated fadeInUp">团队风采</h3>
             <p>TEAM</p>
           </div>
           <el-carousel :interval="4000" type="card">
@@ -109,9 +109,9 @@
         <!-- 合作伙伴 -->
         <div class="content-partner">
           <div class="top">
-            <h3>合作伙伴</h3>
+            <h3 class="animate__animated fadeInUp">合作伙伴</h3>
             <p>RARTNERS</p>
-            <ul class="partner-img">
+            <ul class="partner-img animate__animated fadeInUp">
               <li v-for="(partner, i) in partnerImg" :key="i">
                 <img v-lazy="imgserver + partner.Img" alt />
               </li>
@@ -127,6 +127,8 @@
 import https from '@/utils/https'
 import Banner from '../components/Banner'
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
+import addScrollAnimation from '../utils/scrollAnimation'
+
 export default {
   components: {
     Banner,
@@ -135,7 +137,6 @@ export default {
   },
   data() {
     return {
-      loading: true,
       honorList: [],
       partnerImg: [],
       courseList: [],
@@ -155,15 +156,14 @@ export default {
     Promise.all([
       https.get('Honor/GetHonorAll'),
       https.get('Enterprise/GetEnterpriseAll'),
-      https.get(`Team/GetTeamAll`),
-      https.get(`Course/GetCourseAll`)
+      https.get('Team/GetTeamAll'),
+      https.get('Course/GetCourseAll')
     ]).then(([responseHonor, responseEnterprise, responseTeam, responseCourse]) => {
       this.honorList = responseHonor.data
       this.partnerImg = responseEnterprise.data
       this.teamItem = responseTeam.data
 
       var groupCount = Math.ceil(responseCourse.data.length / 2)
-      window.console.log(groupCount)
       for (let i = 0; i < groupCount; i++) {
         let img2 = []
         for (let j = 0; j < 2; j++) {
@@ -173,19 +173,13 @@ export default {
         }
         this.courseList.push(img2)
       }
-      window.console.log(this.courseList)
-      this.loading = false
     })
-  }
+  },
+  mixins: [addScrollAnimation]
 }
 </script>
 
 <style lang="scss" scoped>
-* {
-  margin: 0;
-  padding: 0;
-}
-
 .go-in {
   width: 100%;
   height: 100%;
@@ -236,7 +230,8 @@ export default {
             width: 360px;
             height: 270px;
             margin-top: 20px;
-            //animation: imgbo 4s infinite;
+            border-radius: 6px;
+            animation: imgbo 4s infinite;
           }
         }
       }
