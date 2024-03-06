@@ -2,8 +2,8 @@
   <div class="cases">
     <el-button type="primary" @click="openDialog()">新增</el-button>
 
-    <el-table border :data="tableData" style="width: 100%">
-      <el-table-column prop="Id" label="序号" width="180"></el-table-column>
+    <el-table border :data="pageData" style="width: 100%">
+      <el-table-column prop="Id" label="序号" width="50"></el-table-column>
       <el-table-column prop="Key" label="键" width="180"></el-table-column>
       <el-table-column prop="Content" label="值"></el-table-column>
       <el-table-column label="操作">
@@ -21,6 +21,8 @@
         </template>
       </el-table-column>
     </el-table>
+    <Page :tableData="tableData" :updatePageData="updatePageData"></Page>
+
     <el-dialog title="案例编辑" :visible.sync="dialogFormVisible">
       <el-form :model="formData">
         <el-form-item label="数据键" :label-width="formLabelWidth">
@@ -40,6 +42,7 @@
 
 <script>
 import https from '@/utils/https'
+import Page from '@/components/Page.vue'
 
 export default {
   data() {
@@ -47,6 +50,7 @@ export default {
       dialogFormVisible: false,
       formLabelWidth: '120px',
       tableData: [],
+      pageData: [],
       formData: {
         Id: 0,
         Key: '',
@@ -54,10 +58,16 @@ export default {
       }
     }
   },
+  components: {
+    Page
+  },
   mounted() {
     this.loadData()
   },
   methods: {
+    updatePageData(pageData) {
+      this.pageData = pageData
+    },
     loadData() {
       https
         .get('DataDictionary/GetDataDictionaryAll')

@@ -2,7 +2,7 @@
   <div class="cases">
     <el-button type="primary" @click="openDialog()">新增</el-button>
 
-    <el-table border :data="tableData" style="width: 100%">
+    <el-table border :data="pageData" style="width: 100%">
       <el-table-column prop="Id" label="序号" width="180"></el-table-column>
       <el-table-column prop="Title" label="案例标题" width="180"></el-table-column>
       <el-table-column prop="Img" label="图片">
@@ -26,6 +26,8 @@
         </template>
       </el-table-column>
     </el-table>
+    <Page :tableData="tableData" :updatePageData="updatePageData"></Page>
+
     <el-dialog title="案例编辑" :visible.sync="dialogFormVisible">
       <el-form :model="formData">
         <el-form-item label="案例标题" :label-width="formLabelWidth">
@@ -49,6 +51,7 @@
 <script>
 import https from '@/utils/https'
 import Uploader from '@/components/Uploader.vue'
+import Page from '@/components/Page.vue'
 
 export default {
   data() {
@@ -56,6 +59,7 @@ export default {
       dialogFormVisible: false,
       formLabelWidth: '120px',
       tableData: [],
+      pageData: [],
       formData: {
         Id: 0,
         Img: '',
@@ -66,12 +70,15 @@ export default {
       }
     }
   },
-  components: { Uploader },
+  components: { Uploader, Page },
   mounted() {
     this.loadData()
   },
 
   methods: {
+    updatePageData(pageData) {
+      this.pageData = pageData
+    },
     updateImg(uploadImg) {
       this.formData.Img = uploadImg
     },
