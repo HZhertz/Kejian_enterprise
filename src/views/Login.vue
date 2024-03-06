@@ -67,13 +67,14 @@ export default {
           https
             .post('User/Login', { strAdmin: this.loginform.name, strPwd: this.loginform.pass })
             .then((response) => {
+              console.log(response)
               if (response.status === 200) {
                 this.$message({
                   message: '登录成功',
                   type: 'success'
                 })
                 sessionStorage.setItem('Ticket', response.Ticket)
-                this.$router.push(this.$route.query.redirect)
+                this.$router.push(this.$route.query.redirect || '/admin')
               } else {
                 this.$message({
                   message: '账号或密码错误',

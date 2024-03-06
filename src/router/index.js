@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import https from '@/utils/https'
 
 Vue.use(VueRouter)
 
@@ -106,16 +107,23 @@ const router = new VueRouter({
   routes
 })
 
-// 判断是否需要登录权限 以及是否登录
 router.beforeEach((to, from, next) => {
-  // 判断是否需要登录权限
   if (to.matched.some((res) => res.meta.requireAuth)) {
-    // 判断是否登录
     if (sessionStorage.getItem('Ticket')) {
-      
-      next()
+      https
+        .get('Admin/User/GetUserAll')
+        .then((response) => {
+          if (response.type === 'success') {
+            next()
+          } else {
+            sessionStorage.removeItem('Ticket')
+            next({ path: '/login' })
+          }
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
     } else {
-      // 没登录则跳转到登录界面
       next({
         path: '/login',
         query: {
