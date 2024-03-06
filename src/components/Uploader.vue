@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-upload
-      class="avatar-uploader"
+      class="uploader"
       action="http://127.0.0.1:3007/Admin/UpLoad/UploadImage"
       :headers="headers"
       name="image"
@@ -10,9 +10,9 @@
       :on-success="successMethod"
       :on-error="errorMethod"
     >
-      <img v-if="img" :src="imgserver + img" class="avatar" />
+      <img v-if="img" :src="imgserver + img" class="uploader-img" />
 
-      <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+      <i v-else class="el-icon-plus uploader-icon"></i>
     </el-upload>
   </div>
 </template>
@@ -48,7 +48,30 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.avatar {
+.uploader {
+  width: 180px;
+  height: 180px;
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.uploader:hover {
+  border-color: #409eff;
+}
+.uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+}
+.uploader-img {
+  width: 180px;
+  height: 180px;
+  display: block;
   object-fit: cover;
 }
 </style>
