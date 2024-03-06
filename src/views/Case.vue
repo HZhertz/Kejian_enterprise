@@ -1,19 +1,23 @@
 <template>
   <div class="case">
-    <banner img="../assets/img/bgtop.jpg" title="经典案例" />
-    <div class="case-section" v-loading="loading">
+    <banner title="经典案例" :img="require('../assets/img/anlitop.jpg')" />
+    <div class="case-section">
       <div class="case-section-content">
-        <div class="case-section-content-list" v-for="(cas, index) in caseList" :key="index">
+        <div
+          class="case-section-content-list animate__animated animate__flipInX"
+          v-for="(cas, index) in caseList"
+          :key="index"
+        >
           <img v-lazy="imgserver + cas.Img" />
           <div class="content-list-abstract" :class="{ 'abstract-active': index % 2 != 1 }">
-            <p class="abstract-title">{{ cas.Title }}</p>
+            <h4 class="abstract-title">{{ cas.Title }}</h4>
             <p class="abstract-content">{{ cas.Content }}</p>
             <div class="more">
               <router-link
                 class="text-decoration"
                 :to="{ name: 'casedetails', params: { id: cas.Id } }"
               >
-                <span>more</span>
+                <span>MORE</span>
                 <img src="../assets/img/sanjiao.png" />
               </router-link>
             </div>
@@ -32,19 +36,14 @@ export default {
   },
   data() {
     return {
-      loading: true,
       caseList: []
     }
   },
   mounted() {
-    console.log('case')
     https
-      .get('Cases/GetCasesAll')
+      .get('Case/GetCaseAll')
       .then((response) => {
-      
         this.caseList = response.data
-       
-        this.loading = false
       })
       .catch(function (error) {
         console.log(error)
@@ -75,7 +74,6 @@ export default {
         display: flex;
         justify-content: center;
         align-items: center;
-        border: 1px solid pink;
 
         img {
           width: 612px;
@@ -114,7 +112,12 @@ export default {
               text-decoration: none;
 
               span {
-                color: #000;
+                font-size: 18px;
+                color: #808080;
+                cursor: pointer;
+                &:hover {
+                  color: #e13834;
+                }
               }
               img {
                 width: 12px;
