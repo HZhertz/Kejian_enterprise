@@ -56,6 +56,7 @@ const routes = [
       requireAuth: true
     },
     component: () => import('../views/Admin.vue'),
+    redirect: '/admin/user',
     children: [
       {
         path: '/admin/user',
@@ -111,6 +112,7 @@ router.beforeEach((to, from, next) => {
   if (to.matched.some((res) => res.meta.requireAuth)) {
     // 判断是否登录
     if (sessionStorage.getItem('Ticket')) {
+      
       next()
     } else {
       // 没登录则跳转到登录界面

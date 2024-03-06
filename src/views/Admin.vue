@@ -54,9 +54,7 @@
 </template>
 
 <script>
-export default {
-  name: "admin"
-};
+export default {}
 </script>
 
 <style lang="scss" soped>

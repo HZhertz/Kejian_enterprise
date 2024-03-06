@@ -73,7 +73,7 @@ export default {
                   type: 'success'
                 })
                 sessionStorage.setItem('Ticket', response.Ticket)
-                this.$router.push(this.$route.query.redirect || '/admin/user')
+                this.$router.push(this.$route.query.redirect)
               } else {
                 this.$message({
                   message: '账号或密码错误',

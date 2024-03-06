@@ -1,11 +1,11 @@
 <template>
   <div class="case">
-    <banner img="../assets/img/bgtop.jpg" />
+    <Banner title="案例详情" :img="require('../assets/img/anlitop.jpg')" />
     <div class="case-product">
       <div class="case-product-content">
-        <img v-lazy="imgserver + caseIdList.Img" alt />
+        <img v-lazy="imgserver + caseIdList.Img" alt="caseImg" />
         <p class="product-title">{{ caseIdList.Title }}</p>
-        <p class="product-time">{{ caseIdList.CreateTime }}</p>
+        <p class="product-time">{{ caseIdList.CreateTime.slice(0, 10) }}</p>
         <p class="product-content">{{ caseIdList.Content }}</p>
       </div>
     </div>
@@ -27,7 +27,6 @@ export default {
   },
   created() {
     this.pid = this.$route.params.id
-    console.log(this.pid)
   },
   mounted() {
     this.loadData()
@@ -35,9 +34,8 @@ export default {
   methods: {
     loadData() {
       https
-        .get(`Cases/GetCasesById/${this.pid}`)
+        .get(`Case/GetCaseById/${this.pid}`)
         .then((response) => {
-         
           this.caseIdList = response.data[0]
         })
         .catch(function (error) {

@@ -1,11 +1,11 @@
 <template>
   <div class="NewsDetails">
-    <banner img="../assets/img/bgtop.jpg" />
+    <Banner title="资讯详情" :img="require('../assets/img/news_top.jpg')" />
     <div class="NewsDetails-product">
       <div class="NewsDetails-product-content">
-        <img v-lazy="imgserver + newsIdList.Img" alt />
+        <img v-lazy="imgserver + newsIdList.Img" alt="newsImg" />
         <p class="product-title">{{ newsIdList.Title }}</p>
-        <p class="product-time">{{ newsIdList.CreateTime }}</p>
+        <p class="product-time">{{ newsIdList.CreateTime.slice(0, 10) }}</p>
         <p class="product-content">{{ newsIdList.Content }}</p>
       </div>
     </div>
@@ -16,7 +16,6 @@
 import https from '@/utils/https'
 import Banner from '../components/Banner'
 export default {
-  name: 'NewsDetails',
   components: {
     Banner
   },
@@ -28,7 +27,6 @@ export default {
   },
   created() {
     this.pid = this.$route.params.id
-    console.log(this.pid)
   },
   mounted() {
     this.loadData()
