@@ -1,8 +1,8 @@
 <template>
   <div>
     <el-button type="primary" @click="openDialog()">新增用户</el-button>
-    <el-button type="danger">清除用户身份票据</el-button>
-    <el-table border :data="tableData" v-loading="loading" style="width: 100%">
+    <el-button type="danger" @click="clearToken()">清除用户身份票据</el-button>
+    <el-table :data="tableData" style="width: 100%">
       <el-table-column prop="Id" label="序号"></el-table-column>
       <el-table-column prop="LoginName" label="用户名"></el-table-column>
       <el-table-column prop="Password" label="密码"></el-table-column>
@@ -36,8 +36,8 @@
           <el-input v-model="formData.Password" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="是否启用" :label-width="formLabelWidth">
-          <el-radio v-model="formData.IsAction" :label="true" border>是</el-radio>
-          <el-radio v-model="formData.IsAction" :label="false" border>否</el-radio>
+          <el-radio v-model="formData.IsAction" :label="1">是</el-radio>
+          <el-radio v-model="formData.IsAction" :label="0">否</el-radio>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -54,7 +54,6 @@ import https from '@/utils/https'
 export default {
   data() {
     return {
-      loading: true,
       dialogFormVisible: false,
       formLabelWidth: '120px',
       tableData: [],
@@ -62,32 +61,21 @@ export default {
         Id: 0,
         LoginName: '',
         Password: '',
-        IsAction: true,
+        IsAction: 1,
         CreateTime: new Date()
       },
       options: {}
     }
   },
   mounted() {
-    // let token = "Browser " + sessionStorage.getItem("token");
-    // //window.console.log(token);
-    // this.options = {
-    //   headers: {
-    //     Authorization: token
-    //   }
-    // };
-
     this.loadData()
   },
   methods: {
     loadData() {
-      this.loading = true
       https
-        .get('Admin/GetUserAll')
+        .get('Admin/User/GetUserAll')
         .then((response) => {
-          console.log(response)
           this.tableData = response.data
-          this.loading = false
         })
         .catch((e) => {
           this.$message({
@@ -101,22 +89,19 @@ export default {
       this.formData.Id = 0
       this.formData.LoginName = ''
       this.formData.Password = ''
-      this.formData.IsAction = true
+      this.formData.IsAction = 1
       this.formData.CreateTime = new Date()
 
       this.dialogFormVisible = true
     },
     // 新增
     handleCreateOrModify() {
-      window.console.log(this.formData)
-      //window.console.log(JSON.stringify(this.formData));
       if (!this.formData.Id) {
         // ID 无效时 视为新增
-        this.loading = true
+
         https
-          .post('Admin/CreateUser', this.formData)
+          .post('Admin/User/CreateUser', this.formData)
           .then((response) => {
-            this.loading = false
             console.log(response)
             this.$message({
               message: '创建成功！',
@@ -132,11 +117,10 @@ export default {
             })
           })
       } else {
-        this.loading = true
+        console.log(this.formData)
         https
-          .put('Admin/ModifiedUser', this.formData)
+          .put('Admin/User/ModifiedUser', this.formData)
           .then((response) => {
-            this.loading = false
             console.log(response)
             this.$message({
               message: '修改成功！',
@@ -166,11 +150,9 @@ export default {
         type: 'warning'
       })
         .then(() => {
-          this.loading = true
           https
-            .delete(`Admin/DeleteUser?id=${row.Id}`)
+            .delete(`Admin/User/DeleteUser?id=${row.Id}`)
             .then((response) => {
-              this.loading = false
               console.log(response)
               this.$message({
                 message: '删除成功！',
@@ -189,6 +171,23 @@ export default {
           this.$message({
             type: 'info',
             message: '已取消删除'
+          })
+        })
+    },
+    clearToken() {
+      this.$confirm('此操作将清除登录信息, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
+          sessionStorage.removeItem('Ticket')
+          this.$router.push('/login')
+        })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消'
           })
         })
     },
