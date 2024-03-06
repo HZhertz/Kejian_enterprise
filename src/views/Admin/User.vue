@@ -1,8 +1,8 @@
 <template>
   <div>
-    <el-button type="primary" @click="openDialog()">新增用户</el-button>
+    <el-button type="primary" @click="openDialog()">新增</el-button>
     <el-button type="danger" @click="clearToken()">清除用户身份票据</el-button>
-    <el-table :data="tableData" style="width: 100%">
+    <el-table border :data="tableData" style="width: 100%">
       <el-table-column prop="Id" label="序号"></el-table-column>
       <el-table-column prop="LoginName" label="用户名"></el-table-column>
       <el-table-column prop="Password" label="密码"></el-table-column>
@@ -63,8 +63,7 @@ export default {
         Password: '',
         IsAction: 1,
         CreateTime: new Date()
-      },
-      options: {}
+      }
     }
   },
   mounted() {
@@ -85,7 +84,6 @@ export default {
         })
     },
     openDialog() {
-      // 清除数据
       this.formData.Id = 0
       this.formData.LoginName = ''
       this.formData.Password = ''
@@ -94,21 +92,25 @@ export default {
 
       this.dialogFormVisible = true
     },
-    // 新增
+
     handleCreateOrModify() {
       if (!this.formData.Id) {
-        // ID 无效时 视为新增
-
         https
           .post('Admin/User/CreateUser', this.formData)
           .then((response) => {
-            console.log(response)
-            this.$message({
-              message: '创建成功！',
-              type: 'success'
-            })
-            this.dialogFormVisible = false
-            this.loadData()
+            if (response.type === 'success') {
+              this.$message({
+                message: '创建成功！',
+                type: 'success'
+              })
+              this.dialogFormVisible = false
+              this.loadData()
+            } else {
+              this.$message({
+                message: '创建失败！',
+                type: 'error'
+              })
+            }
           })
           .catch((e) => {
             this.$message({
@@ -117,17 +119,22 @@ export default {
             })
           })
       } else {
-        console.log(this.formData)
         https
           .put('Admin/User/ModifiedUser', this.formData)
           .then((response) => {
-            console.log(response)
-            this.$message({
-              message: '修改成功！',
-              type: 'success'
-            })
-            this.dialogFormVisible = false
-            this.loadData()
+            if (response.type === 'success') {
+              this.$message({
+                message: '修改成功！',
+                type: 'success'
+              })
+              this.dialogFormVisible = false
+              this.loadData()
+            } else {
+              this.$message({
+                message: '修改失败！',
+                type: 'error'
+              })
+            }
           })
           .catch((e) => {
             this.$message({
@@ -138,12 +145,10 @@ export default {
       }
     },
     handleEdit(index, row) {
-      window.console.log(index, row)
       this.formData = row
       this.dialogFormVisible = true
     },
     handleDelete(index, row) {
-      window.console.log(index, row)
       this.$confirm('此操作将永久此条数据, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -153,12 +158,18 @@ export default {
           https
             .delete(`Admin/User/DeleteUser?id=${row.Id}`)
             .then((response) => {
-              console.log(response)
-              this.$message({
-                message: '删除成功！',
-                type: 'success'
-              })
-              this.loadData()
+              if (response.type === 'success') {
+                this.$message({
+                  message: '删除成功！',
+                  type: 'success'
+                })
+                this.loadData()
+              } else {
+                this.$message({
+                  message: '删除失败！',
+                  type: 'error'
+                })
+              }
             })
             .catch((e) => {
               this.$message({
@@ -201,8 +212,4 @@ export default {
 }
 </script>
 
-<style scoped>
-.el-table {
-  margin-top: 20px;
-}
-</style>
+<style scoped></style>

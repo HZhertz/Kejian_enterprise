@@ -2,12 +2,12 @@
   <div class="news">
     <el-button type="primary" @click="openDialog()">新增</el-button>
 
-    <el-table :data="tableData" border style="width: 100%" v-loading="loading">
+    <el-table border :data="tableData" style="width: 100%">
       <el-table-column prop="Id" label="序号" width="180"></el-table-column>
       <el-table-column prop="Title" label="新闻标题" width="180"></el-table-column>
       <el-table-column prop="Img" label="图片">
         <template slot-scope="scope">
-          <img style="width: 100%" :src="imgserver + scope.row.Img" alt />
+          <img style="height: 140px" :src="imgserver + scope.row.Img" alt="newsImg" />
         </template>
       </el-table-column>
       <el-table-column prop="Content" label="新闻内容">
@@ -41,18 +41,7 @@
           <el-input v-model="formData.Title" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="新闻图片" :label-width="formLabelWidth">
-          <el-upload
-            class="avatar-uploader"
-            action="http://127.0.0.1:3007/Admin/UpLoad/UploadImage"
-            :headers="headers"
-            name="image"
-            :data="{ folder: 'news_image' }"
-            :show-file-list="false"
-            :on-success="handleSuccess"
-          >
-            <img v-if="formData.Img" :src="imgserver + formData.Img" class="avatar" />
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-          </el-upload>
+          <Uploader :img="formData.Img" folder="news_image" :updateImg="updateImg"></Uploader>
         </el-form-item>
         <el-form-item label="新闻内容" :label-width="formLabelWidth">
           <el-input
@@ -77,13 +66,12 @@
 
 <script>
 import https from '@/utils/https'
+import Uploader from '@/components/Uploader.vue'
 
 export default {
   name: 'loginNews',
   data() {
     return {
-      options: {},
-      headers: {},
       tableData: [],
       formData: {
         Id: 0,
@@ -94,29 +82,22 @@ export default {
         CreateTime: new Date()
       },
       dialogFormVisible: false,
-      formLabelWidth: '120px',
-      loading: true
+      formLabelWidth: '120px'
     }
   },
+  components: { Uploader },
   mounted() {
-    this.headers = {
-      Authorization: sessionStorage.getItem('Ticket')
-    }
     this.loadData()
   },
   methods: {
-    handleSuccess(response, file, fileList) {
-      window.console.log(response, file, fileList)
-      this.formData.Img = response.data.url
+    updateImg(uploadImg) {
+      this.formData.Img = uploadImg
     },
     loadData() {
-      this.loading = true
       https
-        .get('News?type=0&num=10')
+        .get('News/GetNews?type=0&num=10')
         .then((response) => {
-          // window.console.log(response);
           this.tableData = response.data
-          this.loading = false
         })
         .catch((e) => {
           this.$message({
@@ -126,7 +107,6 @@ export default {
         })
     },
     openDialog() {
-      // 清除数据
       this.formData.Id = 0
       this.formData.Title = ''
       this.formData.Img = ''
@@ -138,18 +118,22 @@ export default {
     },
     handleCreateOrModify() {
       if (!this.formData.Id) {
-        this.loading = true
         https
-          .post('Admin/CreateNews', this.formData)
+          .post('Admin/News/CreateNews', this.formData)
           .then((response) => {
-            window.console.log(response)
-            this.loading = false
-            this.$message({
-              message: '创建成功！',
-              type: 'success'
-            })
-            this.dialogFormVisible = false
-            this.loadData()
+            if (response.type === 'success') {
+              this.$message({
+                message: '创建成功！',
+                type: 'success'
+              })
+              this.dialogFormVisible = false
+              this.loadData()
+            } else {
+              this.$message({
+                message: '创建失败！',
+                type: 'error'
+              })
+            }
           })
           .catch((e) => {
             this.$message({
@@ -158,18 +142,22 @@ export default {
             })
           })
       } else {
-        this.loading = true
         https
-          .put('Admin/ModifiedNews', this.formData)
+          .put('Admin/News/ModifiedNews', this.formData)
           .then((response) => {
-            this.loading = false
-            window.console.log(response)
-            this.$message({
-              message: '修改成功！',
-              type: 'success'
-            })
-            this.dialogFormVisible = false
-            this.loadData()
+            if (response.type === 'success') {
+              this.$message({
+                message: '修改成功！',
+                type: 'success'
+              })
+              this.dialogFormVisible = false
+              this.loadData()
+            } else {
+              this.$message({
+                message: '修改失败！',
+                type: 'error'
+              })
+            }
           })
           .catch((e) => {
             this.$message({
@@ -179,10 +167,8 @@ export default {
           })
       }
     },
-    //编辑
+
     handleEdit(index, row) {
-      //index:第几行   row:这一行的数据
-      window.console.log(index, row)
       this.formData = row
       this.dialogFormVisible = true
     },
@@ -193,19 +179,21 @@ export default {
         type: 'warning'
       })
         .then(() => {
-          // 已确认删除
-          // 调接口删除
-          this.loading = true
           https
-            .delete(`Admin/DeleteNews?id=${row.Id}`)
+            .delete(`Admin/News/DeleteNews?id=${row.Id}`)
             .then((response) => {
-              this.loading = false
-              window.console.log(response)
-              this.$message({
-                message: '删除成功！',
-                type: 'success'
-              })
-              this.loadData()
+              if (response.type === 'success') {
+                this.$message({
+                  message: '删除成功！',
+                  type: 'success'
+                })
+                this.loadData()
+              } else {
+                this.$message({
+                  message: '删除失败！',
+                  type: 'error'
+                })
+              }
             })
             .catch((e) => {
               this.$message({
@@ -225,11 +213,4 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-.el-table {
-  margin-top: 20px;
-}
-.avatar {
-  object-fit: cover;
-}
-</style>
+<style lang="scss" scoped></style>

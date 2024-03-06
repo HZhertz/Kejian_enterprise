@@ -41,7 +41,9 @@ export default {
     successMethod(response) {
       let uploadImg = response.data.url
       this.updateImg(uploadImg)
-      // this.handleSuccess(response, file, fileList)
+    },
+    errorMethod(error) {
+      console.error(error)
     }
   }
 }

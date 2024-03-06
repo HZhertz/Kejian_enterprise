@@ -16,4 +16,6 @@ body {
 .el-footer {
   line-height: 26px !important;
 }
-
+.el-table {
+  margin-top: 20px;
+}

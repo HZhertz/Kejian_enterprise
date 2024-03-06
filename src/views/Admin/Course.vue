@@ -1,8 +1,8 @@
 <template>
   <div class="cases">
-    <el-button type="primary" @click="openDialog()">新增数据</el-button>
+    <el-button type="primary" @click="openDialog()">新增</el-button>
 
-    <el-table border :data="tableData" v-loading="loading" style="width: 100%">
+    <el-table border :data="tableData" style="width: 100%">
       <el-table-column prop="Id" label="序号" width="180"></el-table-column>
       <el-table-column prop="Year" label="历程年份" width="180"></el-table-column>
       <el-table-column prop="Content" label="历程内容"></el-table-column>
@@ -44,33 +44,25 @@ import https from '@/utils/https'
 export default {
   data() {
     return {
-      loading: true,
       dialogFormVisible: false,
       formLabelWidth: '120px',
       tableData: [],
       formData: {
         Id: 0,
         Year: '',
-        Content: '',
-        CreateTime: new Date()
-      },
-      options: {}
+        Content: ''
+      }
     }
   },
   mounted() {
-   
-
     this.loadData()
   },
   methods: {
     loadData() {
-      this.loading = true
       https
         .get('Course/GetCourseAll')
         .then((response) => {
-          window.console.log(response)
           this.tableData = response.data
-          this.loading = false
         })
         .catch((e) => {
           this.$message({
@@ -80,33 +72,30 @@ export default {
         })
     },
     openDialog() {
-      // 清除数据
       this.formData.Id = 0
-      this.formData.LoginName = ''
-      this.formData.Password = ''
-      this.formData.IsAction = true
-      this.formData.CreateTime = new Date()
+      this.formData.Year = ''
+      this.formData.Content = ''
 
       this.dialogFormVisible = true
     },
-    // 新增
     handleCreateOrModify() {
-      window.console.log(this.formData)
-      //window.console.log(JSON.stringify(this.formData));
       if (!this.formData.Id) {
-        // ID 无效时 视为新增
-        this.loading = true
         https
           .post('Admin/Course/CreateCourse', this.formData)
           .then((response) => {
-            this.loading = false
-            window.console.log(response)
-            this.$message({
-              message: '创建成功！',
-              type: 'success'
-            })
-            this.dialogFormVisible = false
-            this.loadData()
+            if (response.type === 'success') {
+              this.$message({
+                message: '创建成功！',
+                type: 'success'
+              })
+              this.dialogFormVisible = false
+              this.loadData()
+            } else {
+              this.$message({
+                message: '创建失败！',
+                type: 'error'
+              })
+            }
           })
           .catch((e) => {
             this.$message({
@@ -115,18 +104,22 @@ export default {
             })
           })
       } else {
-        this.loading = true
         https
           .put('Admin/Course/ModifiedCourse', this.formData)
           .then((response) => {
-            this.loading = false
-            window.console.log(response)
-            this.$message({
-              message: '修改成功！',
-              type: 'success'
-            })
-            this.dialogFormVisible = false
-            this.loadData()
+            if (response.type === 'success') {
+              this.$message({
+                message: '修改成功！',
+                type: 'success'
+              })
+              this.dialogFormVisible = false
+              this.loadData()
+            } else {
+              this.$message({
+                message: '修改失败！',
+                type: 'error'
+              })
+            }
           })
           .catch((e) => {
             this.$message({
@@ -137,31 +130,31 @@ export default {
       }
     },
     handleEdit(index, row) {
-      window.console.log(index, row)
       this.formData = row
       this.dialogFormVisible = true
     },
     handleDelete(index, row) {
-      window.console.log(index, row)
       this.$confirm('此操作将永久此条数据, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       })
         .then(() => {
-          // 已确认删除
-          // 调接口删除
-          this.loading = true
           https
             .delete(`Admin/Course/DeleteCourse?id=${row.Id}`)
             .then((response) => {
-              this.loading = false
-              window.console.log(response)
-              this.$message({
-                message: '删除成功！',
-                type: 'success'
-              })
-              this.loadData()
+              if (response.type === 'success') {
+                this.$message({
+                  message: '删除成功！',
+                  type: 'success'
+                })
+                this.loadData()
+              } else {
+                this.$message({
+                  message: '删除失败！',
+                  type: 'error'
+                })
+              }
             })
             .catch((e) => {
               this.$message({
@@ -176,19 +169,9 @@ export default {
             message: '已取消删除'
           })
         })
-    },
-    //时间格式化
-    dateFormat: function (row) {
-      //row 表示一行数据, CreateTime 表示要格式化的字段名称
-      let t = new Date(row.CreateTime)
-      return t.getFullYear() + '-' + (t.getMonth() + 1) + '-' + t.getDate()
     }
   }
 }
 </script>
 
-<style scoped>
-.el-table {
-  margin-top: 20px;
-}
-</style>
+<style scoped></style>

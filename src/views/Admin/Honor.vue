@@ -2,11 +2,11 @@
   <div class="cases">
     <el-button type="primary" @click="openDialog()">新增</el-button>
 
-    <el-table border :data="tableData" v-loading="loading" style="width: 100%">
+    <el-table border :data="tableData" style="width: 100%">
       <el-table-column prop="Id" label="序号" width="180"></el-table-column>
       <el-table-column prop="Img" label="荣誉图片">
         <template slot-scope="scope">
-          <img style="width: 100%" :src="imgserver + scope.row.Img" alt />
+          <img style="height: 300px" :src="imgserver + scope.row.Img" alt />
         </template>
       </el-table-column>
       <el-table-column prop="Remark" label="荣誉标题" width="180"></el-table-column>
@@ -49,7 +49,6 @@ import Uploader from '@/components/Uploader.vue'
 export default {
   data() {
     return {
-      loading: true,
       dialogFormVisible: false,
       formLabelWidth: '120px',
       tableData: [],
@@ -58,9 +57,7 @@ export default {
         Img: '',
         Remark: '',
         CreateTime: new Date()
-      },
-      options: {},
-      headers: {}
+      }
     }
   },
   components: { Uploader },
@@ -72,13 +69,10 @@ export default {
       this.formData.Img = uploadImg
     },
     loadData() {
-      this.loading = true
       https
         .get('Honor/GetHonorAll')
         .then((response) => {
-          window.console.log(response)
           this.tableData = response.data
-          this.loading = false
         })
         .catch((e) => {
           this.$message({
@@ -88,7 +82,6 @@ export default {
         })
     },
     openDialog() {
-      // 清除数据
       this.formData.Id = 0
       this.formData.Img = ''
       this.formData.Remark = ''
@@ -96,24 +89,24 @@ export default {
 
       this.dialogFormVisible = true
     },
-    // 新增
     handleCreateOrModify() {
-      window.console.log(this.formData)
-      //window.console.log(JSON.stringify(this.formData));
       if (!this.formData.Id) {
-        // ID 无效时 视为新增
-        this.loading = true
         https
           .post('Admin/Honor/CreateHonor', this.formData)
           .then((response) => {
-            this.loading = false
-            window.console.log(response)
-            this.$message({
-              message: '创建成功！',
-              type: 'success'
-            })
-            this.dialogFormVisible = false
-            this.loadData()
+            if (response.type === 'success') {
+              this.$message({
+                message: '创建成功！',
+                type: 'success'
+              })
+              this.dialogFormVisible = false
+              this.loadData()
+            } else {
+              this.$message({
+                message: '创建失败！',
+                type: 'error'
+              })
+            }
           })
           .catch((e) => {
             this.$message({
@@ -122,18 +115,22 @@ export default {
             })
           })
       } else {
-        this.loading = true
         https
           .put('Admin/Honor/ModifiedHonor', this.formData)
           .then((response) => {
-            this.loading = false
-            window.console.log(response)
-            this.$message({
-              message: '修改成功！',
-              type: 'success'
-            })
-            this.dialogFormVisible = false
-            this.loadData()
+            if (response.type === 'success') {
+              this.$message({
+                message: '修改成功！',
+                type: 'success'
+              })
+              this.dialogFormVisible = false
+              this.loadData()
+            } else {
+              this.$message({
+                message: '修改失败！',
+                type: 'error'
+              })
+            }
           })
           .catch((e) => {
             this.$message({
@@ -144,31 +141,31 @@ export default {
       }
     },
     handleEdit(index, row) {
-      window.console.log(index, row)
       this.formData = row
       this.dialogFormVisible = true
     },
     handleDelete(index, row) {
-      window.console.log(index, row)
       this.$confirm('此操作将永久此条数据, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       })
         .then(() => {
-          // 已确认删除
-          // 调接口删除
-          this.loading = true
           https
             .delete(`Admin/Honor/DeleteHonor?id=${row.Id}`)
             .then((response) => {
-              this.loading = false
-              window.console.log(response)
-              this.$message({
-                message: '删除成功！',
-                type: 'success'
-              })
-              this.loadData()
+              if (response.type === 'success') {
+                this.$message({
+                  message: '删除成功！',
+                  type: 'success'
+                })
+                this.loadData()
+              } else {
+                this.$message({
+                  message: '删除失败！',
+                  type: 'error'
+                })
+              }
             })
             .catch((e) => {
               this.$message({
@@ -183,19 +180,9 @@ export default {
             message: '已取消删除'
           })
         })
-    },
-    //时间格式化
-    dateFormat: function (row) {
-      //row 表示一行数据, CreateTime 表示要格式化的字段名称
-      let t = new Date(row.CreateTime)
-      return t.getFullYear() + '-' + (t.getMonth() + 1) + '-' + t.getDate()
     }
   }
 }
 </script>
 
-<style scoped>
-.el-table {
-  margin-top: 20px;
-}
-</style>
+<style scoped></style>
