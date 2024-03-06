@@ -35,3 +35,6 @@ npm run lint
 ## 接口
 
 ### [Kejian_enterprise_Api](https://github.com/HZhertz/Kejian_enterprise_Api)
+
+本地项目，未上线，需要先运行本地接口
+管理员账号：admin 123456
