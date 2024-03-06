@@ -20,7 +20,7 @@
           </div>
         </div>
 
-        <div class="content-nav-item">
+        <div class="content-nav-item  animate__animated animate__fadeInUp">
           <div class="item-list" v-for="(item, index) in newsList" :key="index">
             <div class="item-img" v-lazy:background-image="imgserver + item.Img"></div>
 
@@ -45,6 +45,7 @@
 <script>
 import https from '@/utils/https'
 import Banner from '../components/Banner'
+
 export default {
   components: {
     Banner
@@ -67,6 +68,7 @@ export default {
         })
     }
   },
+
   mounted() {
     this.loadData()
   },

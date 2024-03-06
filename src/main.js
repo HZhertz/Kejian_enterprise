@@ -7,8 +7,10 @@ import VueAwesomeSwiper from 'vue-awesome-swiper'
 import 'swiper/dist/css/swiper.css'
 import VueLazyload from 'vue-lazyload'
 import VueVideoPlayer from 'vue-video-player'
+import 'vue-video-player/src/custom-theme.css'
 import 'video.js/dist/video-js.css'
 import '@/style/style.css'
+import animate from 'animate.css'
 
 Vue.use(ElementUI)
 Vue.use(VueAwesomeSwiper)
@@ -23,6 +25,7 @@ Vue.use(VueLazyload, {
   attempt: 1
 })
 Vue.use(VueVideoPlayer)
+Vue.use(animate)
 
 Vue.config.productionTip = false
 

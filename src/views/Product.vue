@@ -1,7 +1,7 @@
 <template>
   <div class="product">
-    <banner img="../assets/img/bgtop.jpg" title="产品中心" />
-    <div class="product-content" v-loading="loading">
+    <Banner title="产品中心" :img="require('../assets/img/pro_top.jpg')" />
+    <div class="product-content">
       <div class="p-video">
         <video-player
           class="video-player vjs-custom-skin"
@@ -11,23 +11,23 @@
         ></video-player>
       </div>
       <div class="lacking">
-        <h3 class="title">传统管理模式不足</h3>
+        <h3 class="title fadeInDown animate__animated">传统管理模式不足</h3>
         <div class="lacking-bottom">
-          <div class="lacking-bottom-item">
+          <div class="lacking-bottom-item fadeInTopLeft animate__animated">
             <div class="lacking-bottom-item-img">
               <img src="../assets/img/product-group-icon_3.png" alt />
             </div>
             <p>质量检查、安全检查以抽查为主，难免存在遗漏，留下质量安全隐患。</p>
           </div>
 
-          <div class="lacking-bottom-item">
+          <div class="lacking-bottom-item fadeInDown animate__animated">
             <div class="lacking-bottom-item-img">
               <img src="../assets/img/product-group-icon_2.png" alt />
             </div>
             <p>数据统计、数据分析的缺失，无法为统计、分析、项目评估等工作提供数据支撑。</p>
           </div>
 
-          <div class="lacking-bottom-item">
+          <div class="lacking-bottom-item fadeInTopRight animate__animated">
             <div class="lacking-bottom-item-img">
               <img src="../assets/img/product-group-icon_1.png" alt />
             </div>
@@ -37,66 +37,66 @@
       </div>
       <!-- 平台目标 -->
       <div class="target">
-        <h3 class="title">平台目标</h3>
+        <h3 class="title fadeInUp animate__animated">平台目标</h3>
         <p class="eTitle">TARGET</p>
-        <div class="target-img">
+        <div class="target-img fadeIn animate__animated">
           <img src="../assets/img/product_group_3_img.png" alt />
         </div>
       </div>
       <!--功能模块  -->
       <div class="modular">
-        <h3 class="title">功能模块</h3>
+        <h3 class="title fadeInUp animate__animated">功能模块</h3>
         <p class="eTitle">MODULAR</p>
         <div class="modular-content">
           <div class="modular-content-same">
-            <div class="same-item">
+            <div class="same-item fadeInRight animate__animated">
               <div class="same-item-img">
                 <img src="../assets/img/product-group_4-icon_1.png" alt />
               </div>
               <p>质量控制模块</p>
             </div>
-            <div class="same-item">
+            <div class="same-item fadeInRight animate__animated">
               <div class="same-item-img">
                 <img src="../assets/img/product-group_4-icon_2.png" alt />
               </div>
               <p>知识仓库模块</p>
             </div>
-            <div class="same-item">
+            <div class="same-item fadeInRight animate__animated">
               <div class="same-item-img">
                 <img src="../assets/img/product-group_4-icon_3.png" alt />
               </div>
               <p>信息流程模块</p>
             </div>
-            <div class="same-item">
+            <div class="same-item fadeInRight animate__animated">
               <div class="same-item-img">
                 <img src="../assets/img/product-group_4-icon_1.png" alt />
               </div>
               <p>定位复核模块</p>
             </div>
           </div>
-          <div class="modular-content-center">
+          <div class="modular-content-center fadeIn animate__animated">
             <img src="../assets/img/product_group_4_img.png" alt />
           </div>
           <div class="modular-content-same">
-            <div class="same-item">
+            <div class="same-item fadeInLeft animate__animated">
               <p>信息处理模块</p>
               <div class="same-item-img">
                 <img src="../assets/img/product-group_4-icon_5.png" alt />
               </div>
             </div>
-            <div class="same-item">
+            <div class="same-item fadeInLeft animate__animated">
               <p>材料设备模块</p>
               <div class="same-item-img">
                 <img src="../assets/img/product-group_4-icon_6.png" alt />
               </div>
             </div>
-            <div class="same-item">
+            <div class="same-item fadeInLeft animate__animated">
               <p>进度控制模块</p>
               <div class="same-item-img">
                 <img src="../assets/img/product-group_4-icon_7.png" alt />
               </div>
             </div>
-            <div class="same-item">
+            <div class="same-item fadeInLeft animate__animated">
               <p>安全管理模块</p>
               <div class="same-item-img">
                 <img src="../assets/img/product-group_4-icon_8.png" alt />
@@ -110,16 +110,17 @@
 </template>
 
 <script>
-import https from '@/utils/https'
 import Banner from '../components/Banner'
+import addScrollAnimation from '../utils/scrollAnimation'
+
 export default {
   data() {
     return {
       loading: true,
-      videoSrc: 'http://www.shkjem.com/video/kj.mp4',
+
       playerOptions: {
         playbackRates: [0.5, 1.0, 1.5, 2.0, 4.0, 8.0], //可选择的播放速度
-        autoplay: true, //如果true,浏览器准备好时开始回放。
+        autoplay: false, //如果true,浏览器准备好时开始回放。
         muted: false, // 默认情况下将会消除任何音频。
         loop: false, // 视频一结束就重新开始。
         preload: 'auto', // 建议浏览器在<video>加载元素后是否应该开始下载视频数据。auto浏览器选择最佳行为,立即开始加载视频（如果浏览器支持）
@@ -147,20 +148,7 @@ export default {
   components: {
     Banner
   },
-  created() {
-    https
-      .get(
-        'DataDictionary/GetDataDictionaryAll?key=%E4%BA%A7%E5%93%81%E8%A7%86%E9%A2%91%E9%93%BE%E6%8E%A5'
-      )
-      .then((response) => {
-        this.videoSrc = response.data[0].Content
-      console.log(this.videoSrc)
-        this.loading = false
-      })
-      .catch(function (error) {
-      console.log(error)
-      })
-  }
+  mixins: [addScrollAnimation]
 }
 </script>
 
