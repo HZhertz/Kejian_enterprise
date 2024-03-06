@@ -1,6 +1,6 @@
 <template>
   <div class="go-in">
-    <banner title="走进科建" :img="require('../assets/img/home_top.jpg')" />
+    <Banner title="走进科建" :img="require('../assets/img/home_top.jpg')" />
     <div class="section">
       <div class="section-content">
         <div class="content-summary">

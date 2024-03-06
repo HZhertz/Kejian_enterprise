@@ -1,6 +1,6 @@
 <template>
   <div class="case">
-    <banner title="经典案例" :img="require('../assets/img/anlitop.jpg')" />
+    <Banner title="经典案例" :img="require('../assets/img/anlitop.jpg')" />
     <div class="case-section">
       <div class="case-section-content">
         <div

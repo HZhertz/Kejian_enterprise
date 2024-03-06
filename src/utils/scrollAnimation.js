@@ -7,9 +7,12 @@ export default {
         const windowBottom = windowTop + window.innerHeight
         aniViewElements.forEach(function (element) {
           const elementTop = element.offsetTop
-          // const elementBottom = element.offsetTop + element.offsetHeight
+          const elementBottom = element.offsetTop + element.offsetHeight
 
-          if (elementTop >= windowTop && elementTop <= windowBottom) {
+          if (
+            (elementTop >= windowTop && elementTop <= windowBottom) ||
+            (elementBottom >= windowTop && elementBottom <= windowBottom)
+          ) {
             console.log('show')
             console.log(element.classList)
             if (element.classList.contains('fadeIn')) element.classList.add('animate__fadeIn')

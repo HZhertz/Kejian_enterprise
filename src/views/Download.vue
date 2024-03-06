@@ -1,6 +1,6 @@
 <template>
   <div class="download">
-    <banner img="../assets/img/appDown.jpg" title="下载APP" />
+    <Banner :img="require('../assets/img/appDown.jpg')" />
   </div>
 </template>
 

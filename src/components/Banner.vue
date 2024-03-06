@@ -19,7 +19,7 @@ export default {
     },
     img: {
       type: String,
-      default: '../assets/img/bgtop.jpg'
+      default: ''
     }
   }
 }
